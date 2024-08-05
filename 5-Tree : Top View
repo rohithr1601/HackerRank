@@ -1,0 +1,141 @@
+Given a pointer to the root of a binary tree, print the top view of the binary tree.
+
+The tree as seen from the top the nodes, is called the top view of the tree.
+
+For example :
+
+   1
+    \
+     2
+      \
+       5
+      /  \
+     3    6
+      \
+       4
+Top View : 
+
+Complete the function  and print the resulting values on a single line separated by space.
+
+Input Format
+
+You are given a function,
+
+void topView(node * root) {
+
+}
+Constraints
+
+ Nodes in the tree  
+
+Output Format
+
+Print the values on a single line separated by space.
+
+Sample Input
+
+   1
+    \
+     2
+      \
+       5
+      /  \
+     3    6
+      \
+       4
+Sample Output
+
+1 2 5 6
+
+Explanation
+
+   1
+    \
+     2
+      \
+       5
+      /  \
+     3    6
+      \
+       4
+From the top, only nodes  are visible.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+import java.util.*;
+import java.io.*;
+
+class Node {
+    Node left;
+    Node right;
+    int data;
+    
+    Node(int data) {
+        this.data = data;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+	/* 
+    
+    class Node 
+    	int data;
+    	Node left;
+    	Node right;
+	*/
+	public static void topView(Node root) {
+      if (root == null) return;
+        Map<Integer, Integer> topViewMap = new TreeMap<>();
+        Queue<Map.Entry<Node, Integer>> queue = new LinkedList<>();
+        queue.add(new AbstractMap.SimpleEntry<>(root, 0));
+        while (!queue.isEmpty()) {
+            Map.Entry<Node, Integer> entry = queue.poll();
+            Node node = entry.getKey();
+            int hd = entry.getValue(); 
+            if (!topViewMap.containsKey(hd)) {
+                topViewMap.put(hd, node.data);
+            }
+            if (node.left != null) {
+                queue.add(new AbstractMap.SimpleEntry<>(node.left, hd - 1));
+            }
+            if (node.right != null) {
+                queue.add(new AbstractMap.SimpleEntry<>(node.right, hd + 1));
+            }
+        }
+        for (int value : topViewMap.values()) {
+            System.out.print(value + " ");
+        }
+        System.out.println();
+      
+    }
+    	public static Node insert(Node root, int data) {
+        if(root == null) {
+            return new Node(data);
+        } else {
+            Node cur;
+            if(data <= root.data) {
+                cur = insert(root.left, data);
+                root.left = cur;
+            } else {
+                cur = insert(root.right, data);
+                root.right = cur;
+            }
+            return root;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int t = scan.nextInt();
+        Node root = null;
+        while(t-- > 0) {
+            int data = scan.nextInt();
+            root = insert(root, data);
+        }
+        scan.close();
+        topView(root);
+    }	
+}
