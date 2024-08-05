@@ -1,0 +1,84 @@
+Given the root of a binary tree, return the sum of all left leaves.
+A leaf is a node with no children. A left leaf is a leaf that is the left child of another node.
+Input Format
+
+The first and the only line of input will contain the node data, all separated by a single space. Since -1 is used as an indication whether the left or right node data exist for root, it will not be a part of the node data.
+Constraints
+
+Time:-1sec
+Output Format
+
+Sum of left leaves
+Sample Input 0
+
+3 9 20 -1 -1 15 7 -1 -1 -1 -1
+Sample Output 0
+
+24
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class Solution {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String[] input = reader.readLine().trim().split(" ");
+        TreeNode root = buildTree(input);
+        int result = sumOfLeftLeaves(root);
+        System.out.println(result);
+    }
+
+    private static TreeNode buildTree(String[] input) {
+        if (input.length == 0) return null;
+
+        TreeNode[] nodes = new TreeNode[input.length];
+        for (int i = 0; i < input.length; i++) {
+            if (!input[i].equals("-1")) {
+                nodes[i] = new TreeNode(Integer.parseInt(input[i]));
+            }
+        }
+
+        for (int i = 0; i < input.length; i++) {
+            if (nodes[i] != null) {
+                int leftIndex = 2 * i + 1;
+                int rightIndex = 2 * i + 2;
+                if (leftIndex < input.length && nodes[leftIndex] != null) {
+                    nodes[i].left = nodes[leftIndex];
+                }
+                if (rightIndex < input.length && nodes[rightIndex] != null) {
+                    nodes[i].right = nodes[rightIndex];
+                }
+            }
+        }
+
+        return nodes[0];
+    }
+
+    private static int sumOfLeftLeaves(TreeNode root) {
+        if (root == null) return 0;
+
+        int sum = 0;
+        if (root.left != null && root.left.left == null && root.left.right == null) {
+            sum += root.left.val;
+        }
+        sum += sumOfLeftLeaves(root.left);
+        sum += sumOfLeftLeaves(root.right);
+        return sum;
+    }
+}
