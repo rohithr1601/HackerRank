@@ -1,0 +1,101 @@
+You are given a binary tree having 'N' nodes. Each node of the tree has an integer value. Your task is to find the maximum possible sum of a simple path between any two nodes (possibly same) of the given tree.
+A simple path is a path between any two nodes of a tree, such that no edge in the path is repeated twice. Sum of a simple path is defined as the summation of all node values in a path.
+Input Format
+
+The only line of each test case contains elements in the level order form. The line consists of values of nodes separated by a single space. In case a node is null, we take -1 on its place.
+Constraints
+
+Time:- 1 Sec
+
+Output Format
+
+Print the output .
+
+Sample Input 0
+
+1 2 3 4 -1 -1 -1 -1 -1
+Sample Output 0
+
+10
+Sample Input 1
+
+2 4 -1 3 6 -1 -1 -1 -1
+Sample Output 1
+
+13
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import java.io.*;
+import java.util.*;
+public class Solution 
+{
+    public static class Node 
+    {
+        int val;
+        Node left, right;
+        Node(int x) 
+        {
+            val = x;
+            left = right = null;
+        }
+    }
+    static int maxSum = Integer.MIN_VALUE;
+    public static void main(String[] args) 
+    {
+        Scanner sc = new Scanner(System.in);
+        String[] input = sc.nextLine().split(" ");
+        List<Integer> nodes = new ArrayList<>();
+        for (String val : input) 
+        {
+            if (val.equals("-1")) 
+            {
+                nodes.add(null);
+            } 
+            else 
+            {
+                nodes.add(Integer.parseInt(val));
+            }
+        }
+        Node root = buildTree(nodes);
+        MaxpathSum(root);
+        System.out.println(maxSum);
+    }
+    public static Node buildTree(List<Integer> nodes) 
+    {
+        if (nodes.isEmpty() || nodes.get(0) == null) return null;
+        Node root = new Node(nodes.get(0));
+        Queue<Node> q = new LinkedList<>();
+        q.offer(root);
+        int index = 1;
+        while (!q.isEmpty() && index < nodes.size()) 
+        {
+            Node node = q.poll();
+            if (index < nodes.size() && nodes.get(index) != null) 
+            {
+                node.left = new Node(nodes.get(index));
+                q.offer(node.left);
+            }
+            index++;
+            if (index < nodes.size() && nodes.get(index) != null) 
+            {
+                node.right = new Node(nodes.get(index));
+                q.offer(node.right);
+            }
+            index++;
+        }
+        return root;
+    }
+    public static int MaxpathSum(Node node) 
+    {
+        if (node == null) return 0;
+        int left = Math.max(MaxpathSum(node.left), 0);
+        int right = Math.max(MaxpathSum(node.right), 0);
+        int currentSum = node.val + left + right;
+        if (currentSum > maxSum) 
+        {
+            maxSum = currentSum;
+        }
+        return node.val + Math.max(left, right);
+    }
+}
