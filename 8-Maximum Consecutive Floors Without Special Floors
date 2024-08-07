@@ -1,0 +1,75 @@
+Alice manages a company and has rented some floors of a building as office space. Alice has decided some of these floors should be special floors, used for relaxation only.
+You are given two integers bottom and top, which denote that Alice has rented all the floors from bottom to top (inclusive). You are also given the integer array special, where special[i] denotes a special floor that Alice has designated for relaxation.
+Return the maximum number of consecutive floors without a special floor.
+Input Format
+
+First Line bottom value
+Second line top value
+Third line Array size
+Fourth line array elements
+Constraints
+
+1 <= special.length <= 105
+1 <= bottom <= special[i] <= top <= 109
+All the values of special are unique.
+Output Format
+
+Return the maximum number of consecutive floors without a special floor.
+Sample Input 0
+
+2
+9
+2
+4 6
+Sample Output 0
+
+3
+Explanation 0
+
+Explanation: The following are the ranges (inclusive) of consecutive floors without a special floor:
+(2, 3) with a total amount of 2 floors.
+(5, 5) with a total amount of 1 floor.
+(7, 9) with a total amount of 3 floors.
+Therefore, we return the maximum number which is 3 floors.
+Sample Input 1
+
+6
+8
+3
+7 6 8
+Sample Output 1
+
+0
+Explanation 1
+
+Explanation: Every floor rented is a special floor, so we return 0.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import java.io.*;
+import java.util.*;
+public class Solution 
+{
+    public static void main(String[] args) 
+    {
+        Scanner sc = new Scanner(System.in);
+        int bottom = sc.nextInt();
+        int top = sc.nextInt();
+        int size = sc.nextInt();
+        int[] special = new int[size];
+        for (int i = 0; i < size; i++) 
+        {
+            special[i] = sc.nextInt();
+        }
+        Arrays.sort(special);
+        int maxGap = 0;
+        maxGap = Math.max(maxGap, special[0] - bottom);
+        for (int i = 1; i < size; i++) 
+        {
+            int currentGap = special[i] - special[i - 1] - 1;
+            maxGap = Math.max(maxGap, currentGap);
+        }
+        maxGap = Math.max(maxGap, top - special[size - 1]);
+        System.out.println(maxGap);
+    }
+}
