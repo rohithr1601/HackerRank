@@ -1,0 +1,79 @@
+You are given an array of unique integers that contain numbers in random order. You have to find the longest possible sequence of consecutive numbers using the numbers from given array.
+You need to return the output array which contains starting and ending element. If the length of the longest possible sequence is one, then the output array must contain only single element.
+Note:
+Best solution takes O(n) time.
+If two sequences are of equal length, then return the sequence starting with the number whose occurrence is earlier in the array.
+Input Format
+
+The first line of input contains an integer, that denotes the value of the size of the array. Let us denote it with the symbol n.
+The following line contains n space separated integers, that denote the value of the elements of the array.
+Constraints
+
+0 <= n <= 10^6
+Time Limit: 1 sec
+Output Format
+
+The first and only line of output contains starting and ending element of the longest consecutive sequence. If the length of longest consecutive sequence, then just print the starting element.
+Sample Input 0
+
+13
+2 12 9 16 10 5 3 20 25 11 1 8 6
+Sample Output 0
+
+5
+Sample Input 1
+
+7
+3 7 2 1 9 8 41
+Sample Output 1
+
+3
+Explanation 1
+
+Explanation: Sequence should be of consecutive numbers. Here we have 2 sequences with same length i.e. [1, 2, 3] and [7, 8, 9], but we should select [7, 8, 9] because the starting point of [7, 8, 9] comes first in input array and therefore, the output will be 7 9, as we have to print starting and ending element of the longest consecutive sequence.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+import java.io.*;
+import java.util.*;
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        if (n == 0) 
+        {
+            System.out.println("");
+            return;
+        }
+        HashSet<Integer> numberSet = new HashSet<>();
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) 
+        {
+            nums[i] = sc.nextInt();
+            numberSet.add(nums[i]);
+        }
+        int ls = 0, le = 0, ll = 0;
+        for (int num : nums) 
+        {
+            if (!numberSet.contains(num - 1)) 
+            {
+                int curn = num;
+                int curl = 1;
+                while (numberSet.contains(curn + 1)) 
+                {
+                    curn++;
+                    curl++;
+                }
+                if (curl > ll) 
+                {
+                    ll = curl;
+                    ls = num;
+                    le = curn;
+                }
+            }
+        }
+        int d = le - ls;
+        System.out.println(d+1);
+    }
+}
